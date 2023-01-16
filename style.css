@@ -1,0 +1,81 @@
+@import url("https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@600&display=swap");
+
+body {
+  background-color: #191919;
+  height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 0px;
+  margin: 0px;
+}
+
+h1, h2, p {
+  font-family: "Sofia Sans", sans-serif;
+  color: #ffffff;
+}
+
+.letter {
+  display: inline-block;
+  font-family: "Sofia Sans", sans-serif;
+  font-size: clamp(3em, 3.5em, 4em);
+  cursor: pointer;
+  color: #ffffff;
+  webkit-touch-callout: none;
+  user-select: none;
+}
+
+.letters:active .letter:nth-child(1) {
+  transform: translate(-80%, 60%) rotate(8deg);
+  transition: 1s;
+}
+
+.letters:active .letter:nth-child(2) {
+  transform: translate(-40%, 20%) rotate(4deg);
+  transition: 1s;
+  animation-delay: 100ms;
+}
+
+
+.letters:active .letter:nth-child(3) {
+  transform: translate(-10%, 60%) rotate(-6deg);
+  transition: 1s;
+  animation-delay: 200ms;
+}
+
+.letters:active .letter:nth-child(4) {
+  transform: translate(0%, 8%) rotate(-8deg);
+  transition: 1s;
+  animation-delay: 300ms;
+}
+
+.letters:active .letter:nth-child(5) {
+  transform: translate(0%, -20%) rotate(-3deg);
+  transition: 1s;
+  animation-delay: 400ms;
+}
+
+.letters:active .letter:nth-child(6) {
+  transform: translate(0%, 20%) rotate(-3deg);
+  transition: 1s;
+  animation-delay: 500ms;
+}
+
+.letters:active .letter:nth-child(7) {
+  transform: translate(0%, -40%) rotate(-5deg);
+  transition: 1s;
+  animation-delay: 600ms;
+}
+
+.red {
+   color: PaleVioletRed;
+}
+
+.xr-overlay {
+  z-index: 10000000;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.4);
+  display: none;
+}

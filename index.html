@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>ZooStab|BETA</title>
+  <link href="style.css" rel="stylesheet" type="text/css"/>
+</head>
+
+<body ontouchstart="">
+ <div class="letters">
+   <span class="letter">Z</span>
+   <span class="letter">o</span>
+   <span class="letter">o</span>
+   <span class="letter">S</span>
+   <span class="letter">t</span>
+   <span class="letter">a</span>
+   <span class="letter">b<span class="red">.</span></span>
+ </div>
+
+  <script>
+    const lastLetter = document.querySelectorAll(".letter")[6];
+    lastLetter.addEventListener("webkitTransitionEnd", () => {
+      alert("ZooStab Simulator is a WebXR game currently under development. Thanks for checking this site out!")
+      document.location = "/pages/game.html"
+    });
+  </script>
+</body>
+</html>
