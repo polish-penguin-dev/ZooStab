@@ -1,4 +1,5 @@
 import { ARButton } from "https://threejs.org/examples/jsm/webxr/ARButton.js";
+import { GLTFLoader } from "https://threejs.org/examples/jsm/loaders/GLTFLoader.js";
 import { WebGLRenderer, Scene, PerspectiveCamera, BoxBufferGeometry, MeshBasicMaterial, Mesh } from "https://threejs.org/build/three.module.js";
 
 async function initXR() {
