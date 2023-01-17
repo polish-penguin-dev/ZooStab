@@ -1,49 +1,66 @@
-import { ARButton } from "https://threejs.org/examples/jsm/webxr/ARButton.js";
-import { WebGLRenderer, Scene, PerspectiveCamera, BoxBufferGeometry, MeshBasicMaterial, Mesh } from "https://threejs.org/build/three.module.js";
-
 async function initXR() {
-  const renderer = new WebGLRenderer({antialias:true, alpha:true});
-  renderer.setSize(window.innerWidth, window.innerHeight)
-  renderer.setPixelRatio(window.devicePixelRatio);
-
-  renderer.xr.enabled = true;
-  document.body.appendChild(renderer.domElement);
-
-  document.body.appendChild(ARButton.createButton(renderer, { requiredFeatures:["hit-test", "dom-overlay"], domOverlay: { root: document.getElementById("xr-overlay")}}));
-}
-
-function createScene(renderer) {
-  const scene = new Scene(renderer);
-  const camera = new PerspectiveCamera(
-    70,
-    window.innerWidth / window.innerHeight,
-    0.02,
-    20,
-  );
-
-  const boxGeometry = new BoxBufferGeometry(1, 1, 1);
-  const boxMaterial = new MeshBasicMaterial({ color: 0xff0000 });
-  const box = new Mesh(boxGeometry, boxMaterial);
-  box.position.z = -3;
+  const canvas = document.createElement("canvas");
+  document.body.appendChild(canvas);
   
-  scene.add(box);
+  const gl = canvas.getContext("webgl", {xrCompatible: true});
 
-  function renderLoop(timestamp, frame) {
-    box.rotation.y += 0.01;
-    box.rotation.x += 0.01
-    if(renderer.xr.isPresenting) {
-      renderer.render(scene, camera);
-    }
+  const scene = new THREE.Scene();
+  const boxGeometry = new THREE.BoxBufferGeometry(1, 1, 1);
+  const material = new THREE.MeshBasicMaterial({color: 0xff0000});
+  
+  const cube = new THREE.mesh(boxGeometry, material);
+  scene.add(cube);
+
+const renderer = new THREE.WebGLRenderer({
+  alpha: true,
+  preserveDrawingBuffer: true,
+  canvas: canvas,
+  context: gl
+});
+renderer.autoClear = false;
+
+const camera = new THREE.PerspectiveCamera();
+camera.matrixAutoUpdate = false;
+
+const session = await navigator.xr.requestSession("immersive-ar");
+  
+session.updateRenderState({
+  baseLayer: new XRWebGLLayer(session, gl)
+});
+
+const referenceSpace = await session.requestReferenceSpace("local");
+
+const onXRFrame = (time, frame) => {
+  
+  session.requestAnimationFrame(onXRFrame);
+
+  gl.bindFramebuffer(gl.FRAMEBUFFER, session.renderState.baseLayer.framebuffer)
+
+  const pose = frame.getViewerPose(referenceSpace);
+  if (pose) {
+    const view = pose.views[0];
+
+    const viewport = session.renderState.baseLayer.getViewport(view);
+    renderer.setSize(viewport.width, viewport.height)
+
+    camera.matrix.fromArray(view.transform.matrix)
+    camera.projectionMatrix.fromArray(view.projectionMatrix);
+    camera.updateMatrixWorld(true);
+
+    renderer.render(scene, camera)
   }
-
-  renderer.setAnimationLoop(renderLoop);
+}
+  
+session.requestAnimationFrame(onXRFrame);
 }
 
 async function browserCheck() {
   if (window.navigator.xr) {
     const isSupported = await window.navigator.xr.isSessionSupported("immersive-ar");
     if(isSupported) {
-    initXR();
+document.getElementById("ActivateXR").addEventListener("click", () => {
+      initXR();
+    });
     } else {
       document.location = "/pages/unsupportedDevice.html";
     } 
