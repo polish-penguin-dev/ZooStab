@@ -26,7 +26,7 @@ function createScene(renderer) {
 
   if(localStorage.getItem("visited") === null) {
     localStorage.setItem("visited", 1);
-    document.getElementById("xr-overlay").style.display = "";
+    document.getElementById("xr-overlay").style.display = "block";
   }
   
   const boxGeometry = new BoxBufferGeometry(1, 1, 1);
